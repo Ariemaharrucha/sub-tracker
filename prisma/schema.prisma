@@ -18,6 +18,7 @@ model User {
   image         String?
   sessions      Session[]
   accounts      Account[]
+  subscriptions Subscription[]
 
   @@map("user")
 }
@@ -68,4 +69,27 @@ model Verification {
 
   @@index([identifier])
   @@map("verification")
+}
+
+model Subscription {
+  id        String   @id
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String
+  price     Int
+  currency  String @default("IDR")
+
+  startDate DateTime
+  frequency String
+  
+  isTrial   Boolean  @default(false)
+  status    String   @default("ACTIVE")
+
+  nextPaymentDate DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([nextPaymentDate])
 }
