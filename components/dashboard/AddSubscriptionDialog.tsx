@@ -6,29 +6,11 @@ import { Calendar as CalendarIcon, ChevronDownIcon } from 'lucide-react' // Past
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import { Checkbox } from '@/components/ui/checkbox'
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog'
+import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger, } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
+import { Popover, PopoverContent, PopoverTrigger, } from '@/components/ui/popover'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from '@/components/ui/select'
 import { cn } from '@/lib/utils'
 
 export default function AddSubscriptionDialog() {
@@ -38,7 +20,7 @@ export default function AddSubscriptionDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">Tambah Baru</Button>
+        <Button variant="default">Tambah Baru</Button>
       </DialogTrigger>
       
       <DialogContent className="sm:max-w-[425px]">
@@ -108,7 +90,7 @@ export default function AddSubscriptionDialog() {
           </div>
 
           <div className="grid gap-3">
-            <Label className="hover:bg-accent/50 flex items-start gap-3 rounded-lg border p-3 has-[[aria-checked=true]]:border-blue-600 has-[[aria-checked=true]]:bg-blue-50 dark:has-[[aria-checked=true]]:border-blue-900 dark:has-[[aria-checked=true]]:bg-blue-950 cursor-pointer">
+            <Label className="hover:bg-accent/50 flex items-start gap-3 rounded-lg border p-3 has-aria-checked:border-blue-600 has-aria-checked:bg-blue-50 dark:has-aria-checked:border-blue-900 dark:has-aria-checked:bg-blue-950 cursor-pointer">
               <Checkbox
                 id="isFreeTrial"
                 name="isFreeTrial"
