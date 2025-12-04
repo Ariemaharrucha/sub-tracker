@@ -72,24 +72,23 @@ model Verification {
 }
 
 model Subscription {
-  id        String   @id
+  id        String   @id @default(uuid())
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   name      String
   price     Int
-  currency  String @default("IDR")
 
   startDate DateTime
   frequency String
-  
-  isTrial   Boolean  @default(false)
-  status    String   @default("ACTIVE")
 
+  isTrial       Boolean  @default(false)
+  trialDays     Int?
+  trialEndDate  DateTime?
+
+  status         String   @default("ACTIVE")
   nextPaymentDate DateTime
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  @@index([userId])
-  @@index([nextPaymentDate])
 }

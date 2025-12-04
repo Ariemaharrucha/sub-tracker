@@ -4,22 +4,20 @@ import AddSubscriptionDialog from "@/components/dashboard/AddSubscriptionDialog"
 import ListSubscirption from "@/components/dashboard/ListSubscirption";
 import Navbar from "@/components/dashboard/Navbar";
 import { Input } from "@/components/ui/input";
+import { authClient } from "@/lib/auth/auth.client";
 import { SearchIcon } from "lucide-react";
 
 export default function DashboardPage() {
-  // const { data: session, isPending, error } = authClient.useSession();
+  const { data: session, isPending, error } = authClient.useSession();
+  const userId = session?.user.id as string
 
-  // if (isPending) {
-  //   return <div>Loading session...</div>;
-  // }
+  if (isPending) {
+    return <div>Loading session...</div>;
+  }
 
-  // if (error || !session) {
-  //   return <div>Not authenticated</div>;
-  // }
-
-  // console.log("Dashboard session:", session);
-
-
+  if (error || !session) {
+    return <div>Not authenticated</div>;
+  }
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-100 font-sans dark:bg-black">
@@ -69,7 +67,7 @@ export default function DashboardPage() {
             </div>
           </div>
           <div>
-            <AddSubscriptionDialog />
+            <AddSubscriptionDialog userId={userId} />
           </div>
         </div>
 
