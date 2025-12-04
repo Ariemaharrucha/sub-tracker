@@ -1,131 +1,159 @@
-"use client";
-
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { DropdownMenuContent,DropdownMenuItem,DropdownMenuTrigger,} from "@/components/ui/dropdown-menu";
-import { Table,TableBody,TableCell,TableHead,TableHeader,TableRow,} from "@/components/ui/table";
-import { DropdownMenu } from "@radix-ui/react-dropdown-menu";
-import { Check,MoreHorizontal,PencilIcon,Trash,X,} from "lucide-react";
+import { DropdownMenu, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuContent } from "@/components/ui/dropdown-menu";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { MoreHorizontal, PencilIcon, Trash, X } from "lucide-react";
+import { listSubscription } from "@/lib/action/listSubscription";
 
-export default function ListSubscirption() {
-  
-  const invoices = [
-    {
-      id: "1",
-      subscription: "Netflix",
-      cost: "Rp 186.000",
-      due_date: "05 Des 2025",
-      status: "Active",
-      isTrial: false, // Ini langganan biasa
-    },
-    {
-      id: "2",
-      subscription: "Adobe CC",
-      cost: "Rp 300.000",
-      due_date: "07 Des 2025",
-      status: "Trial",
-      isTrial: true, // Ini Free Trial (Tombol harus Cancel)
-    },
-    {
-      id: "3",
-      subscription: "Adobe CC",
-      cost: "Rp 300.000",
-      due_date: "07 Des 2025",
-      status: "Trial",
-      isTrial: true, // Ini Free Trial (Tombol harus Cancel)
-    },
-    {
-      id: "4",
-      subscription: "Adobe CC",
-      cost: "Rp 300.000",
-      due_date: "07 Des 2025",
-      status: "Trial",
-      isTrial: true, // Ini Free Trial (Tombol harus Cancel)
-    },
-    {
-      id: "5",
-      subscription: "Adobe CC",
-      cost: "Rp 300.000",
-      due_date: "07 Des 2025",
-      status: "Trial",
-      isTrial: true, // Ini Free Trial (Tombol harus Cancel)
-    },
-    {
-      id: "6",
-      subscription: "Adobe CC",
-      cost: "Rp 300.000",
-      due_date: "07 Des 2025",
-      status: "Trial",
-      isTrial: true, // Ini Free Trial (Tombol harus Cancel)
-    },
-  ];
+export type SubscriptionType = {
+  id: string;
+  userId: string;
+  name: string;
+  price: number;
+  startDate: Date;
+  frequency: string;
+  isTrial: boolean;
+  trialDays: number | null;
+  trialEndDate: Date | null;
+  status: string;
+  nextPaymentDate: Date;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+function resolveStatus(s: SubscriptionType): "TRIAL" | "ACTIVE" | "PENDING" | "OVERDUE" {
+  const now = new Date();
+  const next = new Date(s.nextPaymentDate);
+  const trialEnd = s.trialEndDate ? new Date(s.trialEndDate) : null;
+
+  if (s.isTrial && trialEnd && now <= trialEnd) return "TRIAL";
+  if (next.toDateString() === now.toDateString()) return "PENDING";
+  if (next < now) return "OVERDUE";
+  return "ACTIVE";
+}
+
+const formatIDR = (price: number) => price.toLocaleString("id-ID", { style: "currency", currency: "IDR" });
+
+export default async function ListSubscription({ userId }: { userId: string }) {
+  const subscriptions: SubscriptionType[] = await listSubscription(userId);
+
+  const badgeColor = (s: string) => {
+    switch (s) {
+      case "TRIAL":
+        return "bg-yellow-500 text-white";
+      case "ACTIVE":
+        return "bg-green-600 text-white";
+      case "PENDING":
+        return "bg-blue-600 text-white";
+      case "OVERDUE":
+        return "bg-red-600 text-white";
+      default:
+        return "bg-gray-500 text-white";
+    }
+  };
 
   return (
     <div className="w-full mt-6">
       <h3 className="mb-4 font-semibold text-lg">Daftar Langganan</h3>
+
       <div className="[&>div]:max-h-60 [&>div]:overflow-y-auto [&>div]:rounded-sm [&>div]:border shadow-sm">
         <Table>
           <TableHeader>
             <TableRow className="bg-muted sticky top-0 z-10">
-              <TableHead className="w-[200px]">Layanan</TableHead>
+              <TableHead className="w-[180px]">Layanan</TableHead>
               <TableHead>Biaya</TableHead>
               <TableHead>Jatuh Tempo</TableHead>
-              <TableHead className="text-center">Status</TableHead>
-              <TableHead className="text-right pr-6">Aksi</TableHead>
+              <TableHead className="text-center" colSpan={2}>Status</TableHead>
+              {/* <TableHead className="text-center">Tindakan</TableHead> */}
+              <TableHead className="text-center">Menu</TableHead>
             </TableRow>
           </TableHeader>
+
           <TableBody>
-            {invoices.map((invoice) => (
-              <TableRow key={invoice.id}>
-                <TableCell className="font-medium">
-                  {invoice.subscription}
-                </TableCell>
-                <TableCell>{invoice.cost}</TableCell>
-                <TableCell>{invoice.due_date}</TableCell>
+            {subscriptions.map((s) => {
+              const status = resolveStatus(s);
 
-                <TableCell className="text-center">{invoice.status}</TableCell>
+              return (
+                <TableRow key={s.id}>
+                  {/* Nama */}
+                  <TableCell className="font-medium">{s.name}</TableCell>
 
-                {/* --- KOLOM AKSI (LOGIKA UTAMA) --- */}
-                <TableCell className="text-right">
-                  <div className="flex items-center justify-end gap-2">
-                    {invoice.isTrial ? (
+                  {/* Harga */}
+                  <TableCell>{formatIDR(s.price)}</TableCell>
+
+                  {/* Tanggal */}
+                  <TableCell>
+                    {new Date(s.nextPaymentDate).toLocaleDateString("id-ID")}
+                  </TableCell>
+
+                  {/* STATUS BADGE */}
+                  <TableCell className="text-center">
+                    <Badge className={badgeColor(status)}>{status}</Badge>
+                  </TableCell>
+
+                  {/* TINDAKAN */}
+                  <TableCell className="text-center">
+                    {status === "TRIAL" && (
                       <Button variant="destructive" size="sm" className="h-8">
                         <X className="mr-1 h-3.5 w-3.5" />
                         Cancel
                       </Button>
-                    ) : (
+                    )}
+
+                    {status === "OVERDUE" && (
                       <Button
                         variant="outline"
                         size="sm"
-                        className="h-8 border-green-600 text-green-600 hover:bg-green-50 hover:text-green-700"
+                        className="h-8 border-red-600 text-red-600"
                       >
-                        <Check className="mr-1 h-3.5 w-3.5" />
-                        Bayar
+                        Bayar Sekarang
                       </Button>
                     )}
 
-                    {/* Dropdown Menu untuk Edit/Delete */}
+                    {status === "PENDING" && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-8 border-blue-600 text-blue-600"
+                      >
+                        Menunggu
+                      </Button>
+                    )}
+
+                    {status === "ACTIVE" && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-8 border-green-600 text-green-600"
+                      >
+                        Aktif
+                      </Button>
+                    )}
+                  </TableCell>
+
+                  {/* MENU */}
+                  <TableCell className="text-center">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button variant="ghost" size="icon" className="h-8 w-8">
                           <MoreHorizontal className="h-4 w-4" />
-                          <span className="sr-only">Menu</span>
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem>
                           <PencilIcon className="mr-2 h-4 w-4" />
-                          <span>Edit Detail</span>
+                          Edit Detail
                         </DropdownMenuItem>
-                        <DropdownMenuItem className="text-red-600 focus:text-red-600 focus:bg-red-50">
+                        <DropdownMenuItem className="text-red-600">
                           <Trash className="mr-2 h-4 w-4" />
-                          <span>Hapus</span>
+                          Hapus
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
+                  </TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </div>

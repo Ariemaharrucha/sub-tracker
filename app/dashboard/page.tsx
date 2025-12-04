@@ -1,23 +1,15 @@
-"use client";
-
 import AddSubscriptionDialog from "@/components/dashboard/AddSubscriptionDialog";
 import ListSubscirption from "@/components/dashboard/ListSubscirption";
 import Navbar from "@/components/dashboard/Navbar";
 import { Input } from "@/components/ui/input";
-import { authClient } from "@/lib/auth/auth.client";
 import { SearchIcon } from "lucide-react";
+import { auth } from "@/lib/auth/auth";
+import { headers } from "next/headers";
 
-export default function DashboardPage() {
-  const { data: session, isPending, error } = authClient.useSession();
-  const userId = session?.user.id as string
 
-  if (isPending) {
-    return <div>Loading session...</div>;
-  }
-
-  if (error || !session) {
-    return <div>Not authenticated</div>;
-  }
+export default async function DashboardPage() {
+  const session = await auth.api.getSession({ headers: await headers() });
+  const userId = session?.user.id as string;
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-100 font-sans dark:bg-black">
@@ -71,7 +63,7 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <ListSubscirption />
+        <ListSubscirption userId={userId} />
       </main>
     </div>
   );
