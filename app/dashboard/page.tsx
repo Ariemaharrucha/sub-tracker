@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { SearchIcon } from "lucide-react";
 import { auth } from "@/lib/auth/auth";
 import { headers } from "next/headers";
-
+import SubscriptionOverview from "@/components/dashboard/SubscriptionOverview";
 
 export default async function DashboardPage() {
   const session = await auth.api.getSession({ headers: await headers() });
@@ -16,31 +16,7 @@ export default async function DashboardPage() {
       <main className="h-screen min-w-4xl px-6 pb-6 bg-white dark:bg-black">
         <Navbar />
 
-        <div className="mt-8">
-          <h2>Halo, User! 👋</h2>
-          <p>Hemat pangkal kaya, jangan lupa cancel trial!</p>
-          <div className="grid grid-cols-5 mt-10 gap-3">
-            <div className="col-span-2 p-4 rounded-md border">
-              <h3>TOTAL PENGELUARAN</h3>
-              <p className="mt-5">
-                Rp 450.000 <span>/ Bulan</span>
-              </p>
-            </div>
-            <div className="col-span-2 p-4 rounded-md border">
-              <h3>TAGIHAN TERDEKAT</h3>
-              <p className="mt-5">
-                <span>🗓️</span> 05 Des (Besok) <span>Netflix</span>
-              </p>
-            </div>
-            <div className="col-span-1 p-4 rounded-md border">
-              <h3>AKTIF</h3>
-              <p className="mt-5">
-                {" "}
-                4 <span>Apps</span>
-              </p>
-            </div>
-          </div>
-        </div>
+        <SubscriptionOverview userId={userId}/>
 
         <div className="border border-black mt-8"></div>
 
