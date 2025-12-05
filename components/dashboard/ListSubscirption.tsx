@@ -4,6 +4,8 @@ import { DropdownMenu, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuConten
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { MoreHorizontal, PencilIcon, Trash, X } from "lucide-react";
 import { listSubscription } from "@/lib/action/listSubscription";
+import { markAsPaid } from "@/lib/action/markAsPaid";
+import { cancelTrial } from "@/lib/action/cancelTrial";
 
 export type SubscriptionType = {
   id: string;
@@ -21,11 +23,12 @@ export type SubscriptionType = {
   updatedAt: Date;
 };
 
-function resolveStatus(s: SubscriptionType): "TRIAL" | "ACTIVE" | "PENDING" | "OVERDUE" {
+function resolveStatus(s: SubscriptionType): "TRIAL" | "ACTIVE" | "PENDING" | "OVERDUE" | "CANCELLED" {
   const now = new Date();
   const next = new Date(s.nextPaymentDate);
   const trialEnd = s.trialEndDate ? new Date(s.trialEndDate) : null;
-
+  
+  if (s.status === "CANCELLED") return "CANCELLED";
   if (s.isTrial && trialEnd && now <= trialEnd) return "TRIAL";
   if (next.toDateString() === now.toDateString()) return "PENDING";
   if (next < now) return "OVERDUE";
@@ -47,6 +50,8 @@ export default async function ListSubscription({ userId }: { userId: string }) {
         return "bg-blue-600 text-white";
       case "OVERDUE":
         return "bg-red-600 text-white";
+      case "CANCELLED":
+        return "bg-gray-700 text-white";
       default:
         return "bg-gray-500 text-white";
     }
@@ -64,7 +69,6 @@ export default async function ListSubscription({ userId }: { userId: string }) {
               <TableHead>Biaya</TableHead>
               <TableHead>Jatuh Tempo</TableHead>
               <TableHead className="text-center" colSpan={2}>Status</TableHead>
-              {/* <TableHead className="text-center">Tindakan</TableHead> */}
               <TableHead className="text-center">Menu</TableHead>
             </TableRow>
           </TableHeader>
@@ -94,39 +98,58 @@ export default async function ListSubscription({ userId }: { userId: string }) {
                   {/* TINDAKAN */}
                   <TableCell className="text-center">
                     {status === "TRIAL" && (
-                      <Button variant="destructive" size="sm" className="h-8">
-                        <X className="mr-1 h-3.5 w-3.5" />
-                        Cancel
-                      </Button>
+                      <form action={cancelTrial}>
+                        <input type="hidden" name="id" value={s.id} />
+                        <Button variant="destructive" size="sm" className="h-8 cursor-pointer">
+                          <X className="mr-1 h-3.5 w-3.5" />
+                          Cancel
+                        </Button>
+                      </form>
                     )}
 
                     {status === "OVERDUE" && (
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="h-8 border-red-600 text-red-600"
-                      >
-                        Bayar Sekarang
-                      </Button>
+                      <form action={markAsPaid}>
+                        <input type="hidden" name="id" value={s.id} />
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="h-8 border-red-600 text-red-600 cursor-pointer"
+                        >
+                          Bayar Sekarang
+                        </Button>
+                      </form>
                     )}
 
                     {status === "PENDING" && (
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="h-8 border-blue-600 text-blue-600"
-                      >
-                        Menunggu
-                      </Button>
+                      <form action={markAsPaid}>
+                        <input type="hidden" name="id" value={s.id} />
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="h-8 border-blue-600 text-blue-600 cursor-pointer"
+                        >
+                          Menunggu
+                        </Button>
+                      </form>
                     )}
 
                     {status === "ACTIVE" && (
                       <Button
                         variant="outline"
                         size="sm"
-                        className="h-8 border-green-600 text-green-600"
+                        className="h-8 border-green-600 text-green-600 hover:text-green-600 hover:bg-background"
                       >
                         Aktif
+                      </Button>
+                    )}
+
+                    {status === "CANCELLED" && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-8 border-gray-600 text-gray-600"
+                      >
+                        Cancelled
                       </Button>
                     )}
                   </TableCell>
