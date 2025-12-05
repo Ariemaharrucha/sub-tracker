@@ -1,5 +1,5 @@
 import AddSubscriptionDialog from "@/components/dashboard/AddSubscriptionDialog";
-import ListSubscirption from "@/components/dashboard/ListSubscirption";
+import ListSubscirption from "@/components/dashboard/ListSubscription";
 import Navbar from "@/components/dashboard/Navbar";
 import { Input } from "@/components/ui/input";
 import { SearchIcon } from "lucide-react";

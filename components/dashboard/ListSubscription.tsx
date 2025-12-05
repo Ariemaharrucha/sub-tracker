@@ -2,10 +2,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuContent } from "@/components/ui/dropdown-menu";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { MoreHorizontal, PencilIcon, Trash, X } from "lucide-react";
+import { MoreHorizontal, PencilIcon, X } from "lucide-react";
 import { listSubscription } from "@/lib/action/listSubscription";
 import { markAsPaid } from "@/lib/action/markAsPaid";
 import { cancelTrial } from "@/lib/action/cancelTrial";
+import DeleteSubscriptionButton from "./DeleteSubscription";
 
 export type SubscriptionType = {
   id: string;
@@ -167,9 +168,8 @@ export default async function ListSubscription({ userId }: { userId: string }) {
                           <PencilIcon className="mr-2 h-4 w-4" />
                           Edit Detail
                         </DropdownMenuItem>
-                        <DropdownMenuItem className="text-red-600">
-                          <Trash className="mr-2 h-4 w-4" />
-                          Hapus
+                        <DropdownMenuItem asChild>
+                          <DeleteSubscriptionButton id={s.id} />
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
