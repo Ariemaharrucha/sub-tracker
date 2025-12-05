@@ -9,7 +9,7 @@ export default async function SubscriptionOverview({userId}: {userId: string}) {
   return (
     <div className="mt-8">
       <h2>Halo, User! 👋</h2>
-      <p>Hemat pangkal kaya, jangan lupa cancel trial!</p>
+      <p className="mt-2">Hemat pangkal kaya, jangan lupa cancel trial!</p>
       <div className="grid grid-cols-5 mt-10 gap-3">
         <div className="col-span-2 p-4 rounded-md border">
           <h3>TOTAL PENGELUARAN</h3>
