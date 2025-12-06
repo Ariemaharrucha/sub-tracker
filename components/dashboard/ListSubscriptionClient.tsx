@@ -25,7 +25,7 @@ function resolveStatus(s: SubscriptionType): "TRIAL" | "ACTIVE" | "PENDING" | "O
 
 const formatIDR = (price: number) => price.toLocaleString("id-ID", { style: "currency", currency: "IDR" });
 
-export default function ListSubscription({ subscriptions }: { subscriptions: SubscriptionType[] }) {
+export default function ListSubscriptionClient({ subscriptions }: { subscriptions: SubscriptionType[] }) {
 
   const badgeColor = (s: string) => {
     switch (s) {
