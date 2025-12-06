@@ -4,23 +4,23 @@ export default function SubscriptionOverviewSkeleton() {
 
   return (
     <div className="mt-8 animate-pulse">
-      <h2>Halo, User! 👋</h2>
-      <p className="mt-2">Hemat pangkal kaya, jangan lupa cancel trial!</p>
+      <h2>Hello, User! 👋</h2>
+      <p className="mt-2">Saving is the basis of wealth, don't forget to cancel the trial!</p>
       <div className="grid grid-cols-5 mt-10 gap-3">
         <div className="col-span-2 p-4 rounded-md border">
-          <h3>TOTAL PENGELUARAN</h3>
+          <h3>TOTAL EXPENDITURE</h3>
           <div className="mt-5">
             <div className="h-4 w-20 animate-pulse bg-gray-200 rounded-md" />
           </div>
         </div>
         <div className="col-span-2 p-4 rounded-md border">
-          <h3>TAGIHAN TERDEKAT</h3>
+          <h3>UPCOMING BILL</h3>
           <div className="mt-5">
             <div className="h-4 w-20 animate-pulse bg-gray-200 rounded-md" />
           </div>
         </div>
         <div className="col-span-1 p-4 rounded-md border">
-          <h3>AKTIF</h3>
+          <h3>ACTIVE</h3>
           <div className="mt-5">
             <div className="h-4 w-20 animate-pulse bg-gray-200 rounded-md" />
           </div>

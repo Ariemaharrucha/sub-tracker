@@ -8,37 +8,37 @@ export default async function SubscriptionOverview({userId}: {userId: string}) {
 
   return (
     <div className="mt-8">
-      <h2>Halo, User! 👋</h2>
-      <p className="mt-2">Hemat pangkal kaya, jangan lupa cancel trial!</p>
+      <h2>Hello, User! 👋</h2>
+      <p className="mt-2">Saving is the basis of wealth, don't forget to cancel the trial!</p>
       <div className="grid grid-cols-5 mt-10 gap-3">
         <div className="col-span-2 p-4 rounded-md border">
-          <h3>TOTAL PENGELUARAN</h3>
+          <h3>TOTAL EXPENDITURE</h3>
           <p className="mt-5">
-            {totalSubscriptionsPrice} <span>/ Bulan</span>
+            {totalSubscriptionsPrice} <span>/ Month</span>
           </p>
         </div>
         <div className="col-span-2 p-4 rounded-md border">
-          <h3>TAGIHAN TERDEKAT</h3>
+          <h3>UPCOMING BILL</h3>
           <p className="mt-5">
             {closestSubscription ? (
               <>
                 🗓️ {closestSubscription.nextPaymentDate.toLocaleDateString("id-ID")}
                 {" ("}
                 {closestSubscription.diff === 0
-                  ? "Hari ini"
+                  ? "Today"
                   : closestSubscription.diff === 1
-                  ? "Besok"
-                  : `Dalam ${closestSubscription.diff} hari`}
+                  ? "Tomorrow"
+                  : `In ${closestSubscription.diff} days`}
                 {") "}  
                 <strong>{closestSubscription.name}</strong>
               </>
             ) : (
-              "Tidak ada tagihan"
+              "No upcoming bill"
             )}
           </p>
         </div>
         <div className="col-span-1 p-4 rounded-md border">
-          <h3>AKTIF</h3>
+          <h3>ACTIVE</h3>
           <p className="mt-5">
             {" "}
             {activeSubscriptionsCount} <span>Apps</span>

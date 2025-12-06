@@ -13,7 +13,7 @@ export default function SubscriptionListSkeleton() {
             <div className="absolute inset-y-0 left-0 flex items-center pl-3 text-muted-foreground">
               <SearchIcon className="size-4" />
             </div>
-            <Input type="search" disabled placeholder="Cari langganan..." />
+            <Input type="search" disabled placeholder="Search subscription..." />
           </div>
         </div>
 

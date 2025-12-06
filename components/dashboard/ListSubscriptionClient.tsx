@@ -46,15 +46,15 @@ export default function ListSubscriptionClient({ subscriptions }: { subscription
 
   return (
     <div className="w-full mt-6">
-      <h3 className="mb-4 font-semibold text-lg">Daftar Langganan</h3>
+      <h3 className="mb-4 font-semibold text-lg">Subscription List</h3>
 
       <div className="[&>div]:max-h-80 [&>div]:overflow-y-auto [&>div]:rounded-sm [&>div]:border shadow-sm">
         <Table>
           <TableHeader>
             <TableRow className="bg-muted sticky top-0 z-10">
-              <TableHead className="w-[180px]">Layanan</TableHead>
-              <TableHead>Biaya</TableHead>
-              <TableHead>Jatuh Tempo</TableHead>
+              <TableHead className="w-[180px]">Service</TableHead>
+              <TableHead>Price</TableHead>
+              <TableHead>Due Date</TableHead>
               <TableHead className="text-start" colSpan={2}>Status</TableHead>
               <TableHead className="text-center">Menu</TableHead>
             </TableRow>
@@ -64,7 +64,7 @@ export default function ListSubscriptionClient({ subscriptions }: { subscription
             {subscriptions.length < 1 ? (
               <TableRow>
                 <TableCell colSpan={6} className="h-24 text-center">
-                  <span className="text-muted-foreground">Tidak ada langganan</span>
+                  <span className="text-muted-foreground">No subscriptions found</span>
                 </TableCell>
               </TableRow>
             ) : subscriptions.map((s) => {
@@ -109,7 +109,7 @@ export default function ListSubscriptionClient({ subscriptions }: { subscription
                         className="h-8 border-blue-600 text-blue-600 cursor-pointer"
                         onClick={() => markAsPaid.bind(null, s.id)()}
                       >
-                        Bayar Sekarang
+                        Pay Now
                       </Button>
                     )}
 
@@ -120,7 +120,7 @@ export default function ListSubscriptionClient({ subscriptions }: { subscription
                         className="h-8 border-blue-600 text-blue-600 cursor-pointer"
                         onClick={() => markAsPaid.bind(null, s.id)()}
                       >
-                        Menunggu
+                        Wait
                       </Button>
                     )}
 
@@ -130,7 +130,7 @@ export default function ListSubscriptionClient({ subscriptions }: { subscription
                         size="sm"
                         className="h-8 border-green-600 text-green-600 hover:text-green-600 hover:bg-background"
                       >
-                        Aktif
+                        Active
                       </Button>
                     )}
 
@@ -156,7 +156,7 @@ export default function ListSubscriptionClient({ subscriptions }: { subscription
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem>
                           <PencilIcon className="mr-2 h-4 w-4" />
-                          Edit Detail
+                          Edit
                         </DropdownMenuItem>
                         <DropdownMenuItem asChild>
                           <DeleteSubscriptionButton id={s.id} />
