@@ -85,39 +85,37 @@ export default function ListSubscriptionClient({ subscriptions }: { subscription
                   {/* TINDAKAN */}
                   <TableCell className="text-end">
                     {status === "TRIAL" && (
-                      <form action={cancelTrial}>
-                        <input type="hidden" name="id" value={s.id} />
-                        <Button variant="destructive" size="sm" className="h-8 cursor-pointer">
-                          <X className="mr-1 h-3.5 w-3.5" />
-                          Cancel
-                        </Button>
-                      </form>
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        className="h-8 cursor-pointer"
+                        onClick={() => cancelTrial.bind(null, s.id)()}
+                      >
+                        <X className="mr-1 h-3.5 w-3.5" />
+                        Cancel
+                      </Button>
                     )}
 
                     {status === "OVERDUE" && (
-                      <form action={markAsPaid}>
-                        <input type="hidden" name="id" value={s.id} />
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="h-8 border-red-600 text-red-600 cursor-pointer"
-                        >
-                          Bayar Sekarang
-                        </Button>
-                      </form>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-8 border-blue-600 text-blue-600 cursor-pointer"
+                        onClick={() => markAsPaid.bind(null, s.id)()}
+                      >
+                        Bayar Sekarang
+                      </Button>
                     )}
 
                     {status === "PENDING" && (
-                      <form action={markAsPaid}>
-                        <input type="hidden" name="id" value={s.id} />
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="h-8 border-blue-600 text-blue-600 cursor-pointer"
-                        >
-                          Menunggu
-                        </Button>
-                      </form>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-8 border-blue-600 text-blue-600 cursor-pointer"
+                        onClick={() => markAsPaid.bind(null, s.id)()}
+                      >
+                        Menunggu
+                      </Button>
                     )}
 
                     {status === "ACTIVE" && (

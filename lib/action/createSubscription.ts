@@ -2,56 +2,48 @@
 
 import prisma from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
+import { AddSubscriptionSchema } from "@/lib/validation/addSubscriptionSchema"
 
-export async function createSubscription(formData: FormData, userId: string) {
-  const name = formData.get("name") as string
-  const priceInput = formData.get("price") as string
-  const startDateInput = formData.get("startDate") as string
-  const frequency = formData.get("frequency") as string
+export async function createSubscription(values: AddSubscriptionSchema, userId: string) {
+  const { name, price, startDate, frequency, isTrial, trialDays } = values
 
-  if (!name || !priceInput || !startDateInput || !frequency) {
-    return { error: "Missing required fields." }
-  }
+  const parsedDate = new Date(startDate)
 
-  const isTrial = formData.get("isTrial") === "on"
-  const trialDays = isTrial ? parseInt(formData.get("trialDays") as string) : null
-
-  const price = parseInt(priceInput)
-  const startDate = new Date(startDateInput)
-
-  let trialEndDate = null
-  let nextPaymentDate = null
+  let trialEndDate: Date | null = null
+  let nextPaymentDate: Date | null = null
 
   const status = isTrial ? "TRIAL" : "ACTIVE"
 
   if (isTrial && trialDays) {
-    trialEndDate = new Date(startDate)
+    trialEndDate = new Date(parsedDate)
     trialEndDate.setDate(trialEndDate.getDate() + trialDays)
-
     nextPaymentDate = getNextBillingDate(trialEndDate, frequency)
   } else {
-    nextPaymentDate = getNextBillingDate(startDate, frequency)
+    nextPaymentDate = getNextBillingDate(parsedDate, frequency)
   }
 
-  await prisma.subscription.create({
+  try {
+    await prisma.subscription.create({
     data: {
       userId,
       name,
       price,
-      startDate,
+      startDate: parsedDate,
       frequency,
-
       isTrial,
-      trialDays,
+      trialDays: trialDays ?? null,
       trialEndDate,
       status,
-
-      nextPaymentDate,
+      nextPaymentDate
     },
   })
 
   revalidatePath("/dashboard")
   return { success: true }
+  } catch (error) {
+    console.error(error)
+    return { error: "Failed to create subscription" }
+  }
 }
 
 function getNextBillingDate(date: Date, frequency: string) {

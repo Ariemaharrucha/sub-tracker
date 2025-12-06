@@ -1,111 +1,105 @@
-'use client'
+"use client"
 
-import { useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { Calendar } from '@/components/ui/calendar'
-import { Checkbox } from '@/components/ui/checkbox'
-import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { cn } from '@/lib/utils'
-import { createSubscription } from '@/lib/action/createSubscription'
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { addSubscriptionSchema, AddSubscriptionSchema } from "@/lib/validation/addSubscriptionSchema"
+import { createSubscription } from "@/lib/action/createSubscription"
+import {Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogClose} from "@/components/ui/dialog"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Calendar } from "@/components/ui/calendar"
+import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover"
+import { Select, SelectTrigger, SelectItem, SelectContent, SelectValue } from "@/components/ui/select"
+import { Checkbox } from "@/components/ui/checkbox"
+import { useState } from "react"
+import { toast } from "sonner"
 
 export default function AddSubscriptionDialog({ userId }: { userId: string }) {
-  const [date, setDate] = useState<Date | undefined>()
-  const [isCalendarOpen, setIsCalendarOpen] = useState(false)
-  const [isTrial, setIsTrial] = useState(false)
   const [open, setOpen] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false)
 
-
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-    setIsLoading(true)
-
-    const formData = new FormData(event.currentTarget)
-    
-    // Panggil server action
-    const result = await createSubscription(formData, userId)
-
-    if (result?.error) {
-      // Handle Error disini, contoh: alert(result.error) atau toast.error(result.error)
-      console.error(result.error)
-    } else {
-      // Handle Sukses
-      setOpen(false) // Tutup dialog
-      console.log('add subscription success')
-      // Reset form jika perlu atau biarkan revalidatePath bekerja
+  const form = useForm<AddSubscriptionSchema>({
+    resolver: zodResolver(addSubscriptionSchema),
+    defaultValues: {
+      name: "",
+      price: 0,
+      startDate: undefined,
+      frequency: undefined,
+      isTrial: false,
+      trialDays: undefined
     }
-    
-    setIsLoading(false)
-  }
-    
+  })
+
+  const { register, setValue, handleSubmit, watch, formState: { errors, isSubmitting } } = form
+
+  const isTrial = watch("isTrial")
+  const date = watch("startDate")
+
+  async function onSubmit(values: AddSubscriptionSchema) {
+    const res = await createSubscription(values, userId)
+    if (!res.error) {
+      setOpen(false)
+      toast.success("Subscription added successfully")
+    } else {
+      toast.error(res.error)
+    }
+  } 
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="default">Add New</Button>
+        <Button>Add Subscription</Button>
       </DialogTrigger>
 
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>Add Subscription</DialogTitle>
         </DialogHeader>
 
-        <form className="grid gap-4" onSubmit={handleSubmit}>
-          {/* Name */}
-          <div className="grid gap-3">
-            <Label htmlFor="name">Service Name</Label>
-            <Input id="name" name="name" placeholder="Netflix, Spotify, etc." />
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+
+          <div className="space-y-2">
+            <Label>Name</Label>
+            <Input {...register("name")} />
+            {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
           </div>
 
-          {/* Price */}
-          <div className="grid gap-3">
-            <Label htmlFor="price">Price</Label>
-            <Input id="price" name="price" type="number" placeholder="50000" />
+          <div className="space-y-2">
+            <Label>Price</Label>
+            <Input type="number" {...register("price", { valueAsNumber: true })} />
+            {errors.price && <p className="text-red-500 text-sm">{errors.price.message}</p>}
           </div>
 
-          {/* Date */}
-          <div className="grid gap-3">
-            <Label>Start / First Billing Date</Label>
-
+          <div className="space-y-2">
+            <Label>Start Date</Label>
             <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
               <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  className={cn(
-                    "w-full justify-between font-normal text-left",
-                    !date && "text-muted-foreground"
-                  )}
-                >
+                <Button variant="outline" className="w-full justify-start">
                   {date ? date.toLocaleDateString() : "Select date"}
                 </Button>
               </PopoverTrigger>
-
-              <PopoverContent className="p-0">
+              <PopoverContent>
                 <Calendar
                   mode="single"
                   selected={date}
-                  onSelect={(d) => {
-                    setDate(d)
-                    setIsCalendarOpen(false)
-                  }}
+                  onSelect={
+                    (d) => {
+                      d && setValue("startDate", d)
+                      setIsCalendarOpen(false)
+                    }
+                  }
                 />
               </PopoverContent>
             </Popover>
 
-            <input type="hidden" name="startDate" value={date?.toISOString() || ""} />
+            {errors.startDate && <p className="text-red-500 text-sm">{errors.startDate.message}</p>}
           </div>
 
-          {/* Frequency */}
-          <div className="grid gap-3">
+          <div className="space-y-2">
             <Label>Billing Cycle</Label>
-            <Select name="frequency">
-              <SelectTrigger>
-                <SelectValue placeholder="Select cycle" />
-              </SelectTrigger>
+            <Select onValueChange={(v) => setValue("frequency", v as any)}>
+              <SelectTrigger><SelectValue placeholder="Select cycle" /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="MONTHLY">Monthly</SelectItem>
                 <SelectItem value="YEARLY">Yearly</SelectItem>
@@ -113,30 +107,19 @@ export default function AddSubscriptionDialog({ userId }: { userId: string }) {
             </Select>
           </div>
 
-          {/* Trial Toggle */}
-          <div className="grid gap-3">
-            <Label className="flex items-start gap-3 border rounded-md p-3 cursor-pointer">
-              <input type="hidden" name="isTrial" value={isTrial ? "on" : "off"} />
-              <Checkbox
-                id="isTrial"
-                checked={isTrial}
-                onCheckedChange={(v) => setIsTrial(Boolean(v))}
-              />
-              <div>
-                <p className="font-medium">Is this a free trial?</p>
-                <p className="text-sm text-muted-foreground">We&apos;ll remind you before the trial ends.</p>
-              </div>
-            </Label>
+          <div className="flex items-center gap-2">
+            <Checkbox
+              checked={isTrial}
+              onCheckedChange={(val) => setValue("isTrial", Boolean(val))}
+            />
+            <Label>This is a trial</Label>
           </div>
 
-          {/* Trial Duration */}
           {isTrial && (
-            <div className="grid gap-3">
+            <div className="space-y-2">
               <Label>Trial Duration</Label>
-              <Select name="trialDays">
-                <SelectTrigger>
-                  <SelectValue placeholder="Select duration" />
-                </SelectTrigger>
+              <Select onValueChange={(v) => setValue("trialDays", Number(v))}>
+                <SelectTrigger><SelectValue placeholder="Select duration" /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="7">7 days</SelectItem>
                   <SelectItem value="14">14 days</SelectItem>
@@ -146,14 +129,15 @@ export default function AddSubscriptionDialog({ userId }: { userId: string }) {
             </div>
           )}
 
-          <DialogFooter className="mt-4">
+          <DialogFooter>
             <DialogClose asChild>
-              <Button variant="outline" type="button">Cancel</Button>
+              <Button variant="outline">Cancel</Button>
             </DialogClose>
-            <Button type="submit" disabled={isLoading}>
-              {isLoading ? "Saving..." : "Save"}
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Saving..." : "Save"}
             </Button>
           </DialogFooter>
+
         </form>
       </DialogContent>
     </Dialog>

@@ -3,9 +3,7 @@
 import prisma from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
 
-export async function cancelTrial(formData: FormData) {
-  const id = formData.get("id") as string;
-
+export async function cancelTrial(id: string) {
   const sub = await prisma.subscription.findUnique({ where: { id } });
   if (!sub) throw new Error("Subscription not found");
 
