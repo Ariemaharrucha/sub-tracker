@@ -48,7 +48,7 @@ export default function ListSubscriptionClient({ subscriptions }: { subscription
     <div className="w-full mt-6">
       <h3 className="mb-4 font-semibold text-lg">Daftar Langganan</h3>
 
-      <div className="[&>div]:max-h-60 [&>div]:overflow-y-auto [&>div]:rounded-sm [&>div]:border shadow-sm">
+      <div className="[&>div]:max-h-80 [&>div]:overflow-y-auto [&>div]:rounded-sm [&>div]:border shadow-sm">
         <Table>
           <TableHeader>
             <TableRow className="bg-muted sticky top-0 z-10">
@@ -61,7 +61,13 @@ export default function ListSubscriptionClient({ subscriptions }: { subscription
           </TableHeader>
 
           <TableBody>
-            {subscriptions.map((s) => {
+            {subscriptions.length < 1 ? (
+              <TableRow>
+                <TableCell colSpan={6} className="h-24 text-center">
+                  <span className="text-muted-foreground">Tidak ada langganan</span>
+                </TableCell>
+              </TableRow>
+            ) : subscriptions.map((s) => {
               const status = resolveStatus(s);
 
               return (
