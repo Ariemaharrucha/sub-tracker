@@ -10,19 +10,19 @@ export default function SubscriptionOverviewSkeleton() {
         <div className="col-span-2 p-4 rounded-md border">
           <h3>TOTAL PENGELUARAN</h3>
           <div className="mt-5">
-            <div className="h-4 w-20 animate-pulse" />
+            <div className="h-4 w-20 animate-pulse bg-gray-200 rounded-md" />
           </div>
         </div>
         <div className="col-span-2 p-4 rounded-md border">
           <h3>TAGIHAN TERDEKAT</h3>
           <div className="mt-5">
-            <div className="h-4 w-20 animate-pulse" />
+            <div className="h-4 w-20 animate-pulse bg-gray-200 rounded-md" />
           </div>
         </div>
         <div className="col-span-1 p-4 rounded-md border">
           <h3>AKTIF</h3>
           <div className="mt-5">
-            <div className="h-4 w-20 animate-pulse" />
+            <div className="h-4 w-20 animate-pulse bg-gray-200 rounded-md" />
           </div>
         </div>
       </div>
