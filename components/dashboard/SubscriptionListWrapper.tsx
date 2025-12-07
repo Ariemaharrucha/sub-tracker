@@ -16,19 +16,19 @@ export default function SubscriptionListWrapper({ userId, subscriptions }: { use
 
   return (
     <>
-    <div className="mt-6 flex justify-between items-center">
-      <div className="w-full max-w-xs">
+    <div className="mt-6 flex justify-between items-center gap-8">
+      <div className="w-full">
         <div className="relative">
           <div className="text-muted-foreground pointer-events-none absolute inset-y-0 left-0 flex items-center justify-center pl-3 peer-disabled:opacity-50">
-            <SearchIcon className="size-4" />
+            <SearchIcon className="size-4 text-amber-600" />
             <span className="sr-only">Search</span>
           </div>
           <Input
             type="search"
-            placeholder="Cari langganan..."
+            placeholder="Search subscription..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="px-9"
+            className="px-9 h-10 rounded-lg border-amber-200 bg-amber-50 text-amber-950 placeholder:text-amber-600 focus:border-amber-400 focus:bg-white transition-colors focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 focus:ring-offset-amber-400 focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:ring-offset-2 focus-visible:ring-offset-amber-400 focus-visible:outline-none"
           />
         </div>
       </div>
