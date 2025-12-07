@@ -9,7 +9,7 @@ export default function DeleteSubscriptionButton({ id }: { id: string }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="ghost" className="text-red-600 w-full justify-start">
+        <Button variant="ghost" className="text-red-600 w-full justify-start cursor-pointer">
           <Trash className="mr-2 h-4 w-4" />
           Hapus
         </Button>
@@ -17,7 +17,7 @@ export default function DeleteSubscriptionButton({ id }: { id: string }) {
 
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Hapus langganan?</DialogTitle>
+          <DialogTitle className="text-amber-950 font-semibold">Hapus langganan?</DialogTitle>
         </DialogHeader>
 
         <p className="text-sm text-muted-foreground">
@@ -26,7 +26,7 @@ export default function DeleteSubscriptionButton({ id }: { id: string }) {
 
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="outline">Batal</Button>
+            <Button variant="outline" className="cursor-pointer">Batal</Button>
           </DialogClose>
 
           <Button
@@ -34,6 +34,7 @@ export default function DeleteSubscriptionButton({ id }: { id: string }) {
             onClick={async () => {
               await deleteSubscription(id);
             }}
+            className="cursor-pointer"
           >
             Hapus
           </Button>

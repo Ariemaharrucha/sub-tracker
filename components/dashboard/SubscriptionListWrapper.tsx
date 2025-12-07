@@ -29,7 +29,7 @@ export default function SubscriptionListWrapper({ userId, subscriptions }: { use
               placeholder="Search subscription..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="px-9 h-10 rounded-lg border-amber-600 bg-white text-amber-950 placeholder:text-amber-600 focus:border-amber-400 focus:bg-white transition-colors focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 focus:ring-offset-amber-400 focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:ring-offset-2 focus-visible:ring-offset-amber-400 focus-visible:outline-none"
+              className="px-9 h-10 rounded-lg border-amber-600 bg-white text-amber-950 placeholder:text-amber-600 focus:border-amber-400 focus:bg-white transition-colors focus:ring-1 focus:ring-amber-400 focus:ring-offset-1 focus:ring-offset-amber-400 focus-visible:ring-1 focus-visible:ring-amber-400 focus-visible:ring-offset-1 focus-visible:ring-offset-amber-400 focus-visible:outline-none"
             />
           </div>
         </div>
