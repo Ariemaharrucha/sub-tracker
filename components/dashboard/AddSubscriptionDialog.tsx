@@ -49,7 +49,7 @@ export default function AddSubscriptionDialog({ userId }: { userId: string }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>Add Subscription</Button>
+        <Button className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold shadow-md hover:shadow-lg transition-all cursor-pointer">Add Subscription</Button>
       </DialogTrigger>
 
       <DialogContent>
