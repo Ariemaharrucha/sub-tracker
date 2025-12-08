@@ -21,7 +21,7 @@ export default function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-10">
+    <header className="sticky top-0 z-10 bg-white/95 backdrop-blur-2xl">
       <div className="flex h-16 items-center justify-between">
         <div className="flex items-center gap-2">
           <Link
