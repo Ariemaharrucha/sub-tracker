@@ -12,7 +12,7 @@ export default async function DashboardPage() {
   const userId = session?.user.id as string;
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-orange-50 via-amber-50 to-rose-50 py-4 ">
+    <div className="flex min-h-screen items-center justify-center bg-linear-to-br from-orange-50 via-amber-50 to-rose-50 py-4 ">
       <main className="h-screen min-w-6xl px-6 pb-6 bg-white shadow-2xl rounded-2xl overflow-y-auto">
         <Navbar />
         <Suspense fallback={<SubscriptionOverviewSkeleton />}>
