@@ -8,7 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { MoreHorizontal, PencilIcon, X } from "lucide-react";
 import { markAsPaid } from "@/lib/action/markAsPaid";
 import { cancelTrial } from "@/lib/action/cancelTrial";
-import DeleteSubscriptionButton from "./DeleteSubscription";
+import DeleteSubscriptionButton from "./delete-subscription";
 import { SubscriptionType } from "@/lib/type/subscriptionType";
 
 function resolveStatus(s: SubscriptionType): "TRIAL" | "ACTIVE" | "PENDING" | "OVERDUE" | "CANCELLED" {
@@ -45,22 +45,20 @@ export default function ListSubscriptionClient({ subscriptions }: { subscription
   };
 
   return (
-    <div className="w-full mt-6">
-      <h3 className="mb-4 font-semibold text-lg">Subscription List</h3>
-
-      <div className="[&>div]:max-h-80 [&>div]:overflow-y-auto [&>div]:rounded-sm [&>div]:border shadow-sm">
+    <div className="w-full mt-6 overflow-hidden">
+      <div className="[&>div]:max-h-80 [&>div]:overflow-y-auto [&>div]:rounded-lg [&>div]:border-2 shadow-xl">
         <Table>
           <TableHeader>
-            <TableRow className="bg-muted sticky top-0 z-10">
-              <TableHead className="w-[180px]">Service</TableHead>
-              <TableHead>Price</TableHead>
-              <TableHead>Due Date</TableHead>
-              <TableHead className="text-start" colSpan={2}>Status</TableHead>
-              <TableHead className="text-center">Menu</TableHead>
+            <TableRow className="bg-white sticky top-0 z-10 hover:bg-white border">
+              <TableHead className="w-[180px] font-semibold text-medium">Service</TableHead>
+              <TableHead className="font-semibold text-medium">Price</TableHead>
+              <TableHead className="font-semibold text-medium">Due Date</TableHead>
+              <TableHead className="text-start font-semibold text-medium" colSpan={2}>Status</TableHead>
+              <TableHead className="text-center font-semibold text-medium">Menu</TableHead>
             </TableRow>
           </TableHeader>
 
-          <TableBody>
+          <TableBody className="bg-white">
             {subscriptions.length < 1 ? (
               <TableRow>
                 <TableCell colSpan={6} className="h-24 text-center">
@@ -73,7 +71,7 @@ export default function ListSubscriptionClient({ subscriptions }: { subscription
               return (
                 <TableRow key={s.id}>
                   {/* Nama */}
-                  <TableCell className="font-medium">{s.name}</TableCell>
+                  <TableCell className="font-medium">{s.name.charAt(0).toUpperCase() + s.name.slice(1)}</TableCell>
 
                   {/* Harga */}
                   <TableCell>{formatIDR(s.price)}</TableCell>

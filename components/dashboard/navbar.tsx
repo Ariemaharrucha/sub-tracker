@@ -21,14 +21,14 @@ export default function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-10">
+    <header className="sticky top-0 z-10 bg-white/95 backdrop-blur-2xl">
       <div className="flex h-16 items-center justify-between">
         <div className="flex items-center gap-2">
           <Link
             href="/"
             className="flex items-center gap-2 font-semibold text-xl"
           >
-            <Circle className="h-4 w-4 fill-green-500 text-green-500" />
+            <Circle className="h-8 w-8 fill-amber-500 text-amber-950" />
             <span>SubTracker.io</span>
           </Link>
         </div>
@@ -38,11 +38,12 @@ export default function Navbar() {
             <DropdownMenuTrigger asChild>
               <Button
                 variant="outline"
-                className="flex items-center gap-2 pl-3 pr-4"
+                size={"lg"}
+                className="flex items-center gap-2 pl-3 pr-4 cursor-pointer rounded-full shadow-md"
               >
-                <User className="h-4 w-4" />
-                <span>Profil</span>
-                <span className="text-muted-foreground text-xs font-normal">
+                <User className="h-4 w-4 text-amber-600" />
+                <span className="font-semibold text-md text-amber-600">Profile</span>
+                <span className="text-xs font-normal text-amber-800">
                   (Logout)
                 </span>
                 <ChevronDown className="h-4 w-4 opacity-50" />
@@ -50,11 +51,11 @@ export default function Navbar() {
             </DropdownMenuTrigger>
 
             <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              {/* <DropdownMenuLabel>My Account</DropdownMenuLabel> */}
               <DropdownMenuSeparator />
               <DropdownMenuItem className="cursor-pointer">
-                <User className="mr-2 h-4 w-4" />
-                <span>Profile</span>
+                <User className="mr-2 h-4 w-4 text-amber-600" />
+                <span className="font-semibold text-md text-amber-600">Profile</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem

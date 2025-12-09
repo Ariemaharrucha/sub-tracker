@@ -5,7 +5,7 @@ export default function SubscriptionOverviewSkeleton() {
   return (
     <div className="mt-8 animate-pulse">
       <h2>Hello, User! 👋</h2>
-      <p className="mt-2">Saving is the basis of wealth, don't forget to cancel the trial!</p>
+      <p className="mt-2">Saving is the basis of wealth, don&apos;t forget to cancel the trial!</p>
       <div className="grid grid-cols-5 mt-10 gap-3">
         <div className="col-span-2 p-4 rounded-md border">
           <h3>TOTAL EXPENDITURE</h3>

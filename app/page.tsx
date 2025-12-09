@@ -1,17 +1,20 @@
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-
+import BenefitsSection from "@/components/landing/benefits-section";
+import CTA from "@/components/landing/cta";
+import Features from "@/components/landing/features";
+import Hero from "@/components/landing/hero";
+import HowItWorksSection from "@/components/landing/how-it-works-section";
+import Footer from "@/components/landing/footer";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <Link href="/sign-in">
-            <Button className="cursor-pointer">Sign-in</Button>
-          </Link>
-        </div>
+    <div className="min-h-screen bg-linear-to-br from-orange-50 via-amber-50 to-rose-50">
+      <main className="">
+        <Hero/>
+        <Features/>
+        <BenefitsSection/>
+        <HowItWorksSection/>
+        <CTA/>
+        <Footer/> 
       </main>
     </div>
   );

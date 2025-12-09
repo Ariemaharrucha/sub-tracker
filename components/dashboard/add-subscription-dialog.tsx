@@ -15,6 +15,8 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { useState } from "react"
 import { toast } from "sonner"
 
+type frequencyType = "MONTHLY" | "YEARLY"
+
 export default function AddSubscriptionDialog({ userId }: { userId: string }) {
   const [open, setOpen] = useState(false)
   const [isCalendarOpen, setIsCalendarOpen] = useState(false)
@@ -49,33 +51,33 @@ export default function AddSubscriptionDialog({ userId }: { userId: string }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>Add Subscription</Button>
+        <Button className="bg-linear-to-br from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold shadow-md hover:shadow-lg transition-all cursor-pointer">Add Subscription</Button>
       </DialogTrigger>
 
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add Subscription</DialogTitle>
+          <DialogTitle className="text-amber-950">Add Subscription</DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
 
           <div className="space-y-2">
-            <Label>Name</Label>
-            <Input {...register("name")} />
+            <Label className="text-amber-950 font-semibold">Name</Label>
+            <Input {...register("name")} className="border-amber-600 bg-white text-amber-950 placeholder:text-amber-600 focus:border-amber-400 focus:bg-white transition-colors focus:ring-1 focus:ring-amber-400 focus:ring-offset-1 focus:ring-offset-amber-400 focus-visible:ring-1 focus-visible:ring-amber-400 focus-visible:ring-offset-1 focus-visible:ring-offset-amber-400 focus-visible:outline-none" />
             {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
           </div>
 
           <div className="space-y-2">
-            <Label>Price</Label>
-            <Input type="number" {...register("price", { valueAsNumber: true })} />
+            <Label className="text-amber-950 font-semibold">Price</Label>
+            <Input type="number" {...register("price", { valueAsNumber: true })} className="border-amber-600 bg-white text-amber-950 placeholder:text-amber-600 focus:border-amber-400 focus:bg-white transition-colors focus:ring-1 focus:ring-amber-400 focus:ring-offset-1 focus:ring-offset-amber-400 focus-visible:ring-1 focus-visible:ring-amber-400 focus-visible:ring-offset-1 focus-visible:ring-offset-amber-400 focus-visible:outline-none"/>
             {errors.price && <p className="text-red-500 text-sm">{errors.price.message}</p>}
           </div>
 
           <div className="space-y-2">
-            <Label>Start Date</Label>
+            <Label className="text-amber-950 font-semibold">Start Date</Label>
             <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
               <PopoverTrigger asChild>
-                <Button variant="outline" className="w-full justify-start">
+                <Button variant="outline" className="w-full justify-start border-amber-600">
                   {date ? date.toLocaleDateString() : "Select date"}
                 </Button>
               </PopoverTrigger>
@@ -97,9 +99,9 @@ export default function AddSubscriptionDialog({ userId }: { userId: string }) {
           </div>
 
           <div className="space-y-2">
-            <Label>Billing Cycle</Label>
-            <Select onValueChange={(v) => setValue("frequency", v as any)}>
-              <SelectTrigger><SelectValue placeholder="Select cycle" /></SelectTrigger>
+            <Label className="text-amber-950 font-semibold">Billing Cycle</Label>
+            <Select onValueChange={(v) => setValue("frequency", v as frequencyType)}>
+              <SelectTrigger className="border-amber-600"><SelectValue placeholder="Select cycle" /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="MONTHLY">Monthly</SelectItem>
                 <SelectItem value="YEARLY">Yearly</SelectItem>
@@ -111,15 +113,16 @@ export default function AddSubscriptionDialog({ userId }: { userId: string }) {
             <Checkbox
               checked={isTrial}
               onCheckedChange={(val) => setValue("isTrial", Boolean(val))}
+              className="h-5 w-5 rounded border-amber-400 text-amber-600 focus:ring-amber-400 data-[state=checked]:bg-amber-500 data-[state=checked]:text-amber-50"
             />
-            <Label>This is a trial</Label>
+            <Label className="text-amber-950 font-semibold">This is a trial</Label>
           </div>
 
           {isTrial && (
             <div className="space-y-2">
-              <Label>Trial Duration</Label>
+              <Label className="text-amber-950 font-semibold">Trial Duration</Label>
               <Select onValueChange={(v) => setValue("trialDays", Number(v))}>
-                <SelectTrigger><SelectValue placeholder="Select duration" /></SelectTrigger>
+                <SelectTrigger className="border-amber-600"><SelectValue placeholder="Select duration" /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="7">7 days</SelectItem>
                   <SelectItem value="14">14 days</SelectItem>
@@ -131,9 +134,9 @@ export default function AddSubscriptionDialog({ userId }: { userId: string }) {
 
           <DialogFooter>
             <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
+              <Button variant="outline" className="cursor-pointer">Cancel</Button>
             </DialogClose>
-            <Button type="submit" disabled={isSubmitting}>
+            <Button type="submit" disabled={isSubmitting} className="bg-linear-to-br from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold shadow-md hover:shadow-lg transition-all cursor-pointer">
               {isSubmitting ? "Saving..." : "Save"}
             </Button>
           </DialogFooter>
