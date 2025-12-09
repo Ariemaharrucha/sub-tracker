@@ -15,6 +15,8 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { useState } from "react"
 import { toast } from "sonner"
 
+type frequencyType = "MONTHLY" | "YEARLY"
+
 export default function AddSubscriptionDialog({ userId }: { userId: string }) {
   const [open, setOpen] = useState(false)
   const [isCalendarOpen, setIsCalendarOpen] = useState(false)
@@ -49,7 +51,7 @@ export default function AddSubscriptionDialog({ userId }: { userId: string }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="bg-linear-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold shadow-md hover:shadow-lg transition-all cursor-pointer">Add Subscription</Button>
+        <Button className="bg-linear-to-br from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold shadow-md hover:shadow-lg transition-all cursor-pointer">Add Subscription</Button>
       </DialogTrigger>
 
       <DialogContent>
@@ -98,7 +100,7 @@ export default function AddSubscriptionDialog({ userId }: { userId: string }) {
 
           <div className="space-y-2">
             <Label className="text-amber-950 font-semibold">Billing Cycle</Label>
-            <Select onValueChange={(v) => setValue("frequency", v as any)}>
+            <Select onValueChange={(v) => setValue("frequency", v as frequencyType)}>
               <SelectTrigger className="border-amber-600"><SelectValue placeholder="Select cycle" /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="MONTHLY">Monthly</SelectItem>
@@ -134,7 +136,7 @@ export default function AddSubscriptionDialog({ userId }: { userId: string }) {
             <DialogClose asChild>
               <Button variant="outline" className="cursor-pointer">Cancel</Button>
             </DialogClose>
-            <Button type="submit" disabled={isSubmitting} className="bg-linear-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold shadow-md hover:shadow-lg transition-all cursor-pointer">
+            <Button type="submit" disabled={isSubmitting} className="bg-linear-to-br from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold shadow-md hover:shadow-lg transition-all cursor-pointer">
               {isSubmitting ? "Saving..." : "Save"}
             </Button>
           </DialogFooter>
