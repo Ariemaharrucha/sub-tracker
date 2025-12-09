@@ -8,7 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { MoreHorizontal, PencilIcon, X } from "lucide-react";
 import { markAsPaid } from "@/lib/action/markAsPaid";
 import { cancelTrial } from "@/lib/action/cancelTrial";
-import DeleteSubscriptionButton from "./DeleteSubscription";
+import DeleteSubscriptionButton from "./delete-subscription";
 import { SubscriptionType } from "@/lib/type/subscriptionType";
 
 function resolveStatus(s: SubscriptionType): "TRIAL" | "ACTIVE" | "PENDING" | "OVERDUE" | "CANCELLED" {

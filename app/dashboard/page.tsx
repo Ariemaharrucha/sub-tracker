@@ -1,11 +1,11 @@
-import Navbar from "@/components/dashboard/Navbar";
+import Navbar from "@/components/dashboard/navbar";
 import { auth } from "@/lib/auth/auth";
 import { headers } from "next/headers";
-import SubscriptionOverview from "@/components/dashboard/SubscriptionOverview";
+import SubscriptionOverview from "@/components/dashboard/subscription-overview";
 import { Suspense } from "react";
-import SubscriptionOverviewSkeleton from "@/components/dashboard/SubscriptionOverviewSkeleton";
-import SubscriptionListSkeleton from "@/components/dashboard/SubscriptionListSkeleton";
-import SubscriptionListContainer from "@/components/dashboard/SubscriptionListContainer";
+import SubscriptionOverviewSkeleton from "@/components/dashboard/subscription-overview-skeleton";
+import SubscriptionListSkeleton from "@/components/dashboard/subscription-list-skeleton";
+import SubscriptionListContainer from "@/components/dashboard/subscription-list-container";
 
 export default async function DashboardPage() {
   const session = await auth.api.getSession({ headers: await headers() });

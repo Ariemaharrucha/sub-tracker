@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
-import ListSubscriptionClient from "./ListSubscriptionClient";
+import ListSubscriptionClient from "./list-subscription-client";
 import { SubscriptionType } from "@/lib/type/subscriptionType";
 import { SearchIcon } from "lucide-react";
-import AddSubscriptionDialog from "./AddSubscriptionDialog";
+import AddSubscriptionDialog from "./add-subscription-dialog";
 
 export default function SubscriptionListWrapper({ userId, subscriptions }: { userId: string, subscriptions: SubscriptionType[] }) {
   const [query, setQuery] = useState("");
