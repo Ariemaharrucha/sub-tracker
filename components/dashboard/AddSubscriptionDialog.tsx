@@ -49,7 +49,7 @@ export default function AddSubscriptionDialog({ userId }: { userId: string }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold shadow-md hover:shadow-lg transition-all cursor-pointer">Add Subscription</Button>
+        <Button className="bg-linear-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold shadow-md hover:shadow-lg transition-all cursor-pointer">Add Subscription</Button>
       </DialogTrigger>
 
       <DialogContent>
@@ -134,7 +134,7 @@ export default function AddSubscriptionDialog({ userId }: { userId: string }) {
             <DialogClose asChild>
               <Button variant="outline" className="cursor-pointer">Cancel</Button>
             </DialogClose>
-            <Button type="submit" disabled={isSubmitting} className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold shadow-md hover:shadow-lg transition-all cursor-pointer">
+            <Button type="submit" disabled={isSubmitting} className="bg-linear-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold shadow-md hover:shadow-lg transition-all cursor-pointer">
               {isSubmitting ? "Saving..." : "Save"}
             </Button>
           </DialogFooter>
