@@ -1,9 +1,8 @@
 # 📊 **sub-tracker**
 
-> **Manage all your subscriptions in one place — simple, clean, and under control.**
-
 ---
-
+(./screenshots/landing.png)
+(./screenshots/dashboard.png)
 ## 📚 Table of Contents
 
 * [Project Overview](#-project-overview)
@@ -16,7 +15,6 @@
   * [Environment Variables](#environment-variables)
   * [Running the App](#running-the-app)
 * [Folder Structure](#-folder-structure)
-* [License](#-license)
 
 ---
 
