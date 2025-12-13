@@ -1,35 +1,107 @@
-# Next.js + Better Auth + Prisma (Bun Setup)
+# 📊 **sub-tracker**
 
-This project is built with **Next.js (App Router)** and configured with **Better Auth** for authentication. Before running the application, make sure you have **generated the Prisma schema using Better Auth** and filled in your `.env` file.
+> **Manage all your subscriptions in one place — simple, clean, and under control.**
 
 ---
 
-## ⚙️ Setup Instructions
+## 📚 Table of Contents
 
-### 1. Install dependencies (using Bun)
+* [Project Overview](#-project-overview)
+* [Key Features](#-key-features)
+* [Tech Stack](#-tech-stack)
+* [Getting Started](#-getting-started)
+
+  * [Prerequisites](#prerequisites)
+  * [Installation](#installation)
+  * [Environment Variables](#environment-variables)
+  * [Running the App](#running-the-app)
+* [Folder Structure](#-folder-structure)
+* [License](#-license)
+
+---
+
+## 🚀 Project Overview
+
+**sub-tracker** is a web application designed to record and manage all of your digital subscriptions in a single, centralized dashboard.
+
+Built with **Next.js 16** and **PostgreSQL (Neon)**, this application helps users:
+
+* View and manage active subscriptions
+* Calculate total monthly subscription expenses
+* Receive email notifications before payment due dates
+
+---
+
+## ✨ Key Features
+
+* 📋 **Subscription Management** — Easily add, view, and delete subscription records
+* 💰 **Monthly Expense Overview** — Instantly see total subscription costs per month
+* 📧 **Email Notifications** — Automatic email reminders before subscription renewals
+* 🔐 **Authentication** — Secure login with Google OAuth (Better Auth)
+
+---
+
+## 🧰 Tech Stack
+
+* **Frontend**: Next.js 16 (App Router)
+* **Styling**: Tailwind CSS, Shadcn UI
+* **Backend**: Next.js API Routes
+* **Authentication**: Better Auth (Google OAuth)
+* **Database ORM**: Prisma
+* **Database**: PostgreSQL
+* **Validation**: Zod
+* **Email Service**: Nodemailer (Gmail SMTP)
+
+---
+
+## 🛠 Getting Started
+
+### Prerequisites
+
+Make sure you have the following installed:
+
+* Node.js ≥ 18
+* npm / yarn / pnpm / bun
+
+---
+
+### Installation
+
+1. **Clone the repository**
+
+```bash
+git clone https://github.com/Ariemaharrucha/sub-tracker
+cd sub-tracker
+```
+
+2. **Install dependencies**
+
+Using npm:
+
+```bash
+npm install
+```
+
+Using pnpm:
+
+```bash
+pnpm install
+```
+
+Using bun:
 
 ```bash
 bun install
 ```
 
-### 2. Generate Prisma schema from Better Auth
-
-```bash
-bunx @better-auth/cli generate
-```
-
-### 3. Apply Prisma migrations
-
-```bash
-bunx prisma migrate dev
-```
-
 ---
 
-## 📄 Example `.env.example`
+### Environment Variables
+
+Copy the `.env.example` file to `.env` and configure the values:
 
 ```env
-DATABASE_URL="postgresql:"
+DATABASE_URL="postgresql://"
 
 BETTER_AUTH_SECRET="from better auth dashboard"
 BETTER_AUTH_URL="http://localhost:3000"
@@ -41,41 +113,42 @@ GMAIL_USER=""
 GMAIL_PASS=""
 ```
 
+> ⚠️ **Note:** Ensure that OAuth credentials, database connection, and Gmail SMTP settings are properly configured.
+
 ---
 
-## 🚀 Run the Development Server
+### Running the App
+
+1. **Generate Prisma Client & run database migrations**
 
 ```bash
-bun dev
+npx prisma migrate dev
 ```
 
-Open your browser at:
+2. **Start the development server**
 
-👉 [http://localhost:3000](http://localhost:3000)
+```bash
+npm run dev
+```
 
----
+Open your browser and visit:
 
-## 🗂 Project Structure
-
-* `app/` – Main Next.js App Router
-* `lib/auth/` – Better Auth configuration
-* `prisma/schema.prisma` – Prisma database schema
-* `components/` – UI Components
-* `env.example` – Environment variable template
+```
+http://localhost:3000
+```
 
 ---
 
-## 📚 Additional Documentation
+## 📁 Folder Structure
 
-### Next.js
+A brief overview of the main project structure:
 
-[https://nextjs.org/docs](https://nextjs.org/docs)
-
-### Better Auth
-
-[https://www.better-auth.com/docs/integrations/next](https://www.better-auth.com/docs/integrations/next)
-[https://www.better-auth.com/docs/installation](https://www.better-auth.com/docs/installation)
-
-### Prisma
-
-[https://www.prisma.io/docs/guides/nextjs](https://www.prisma.io/docs/guides/nextjs)
+```bash
+app/                # Next.js App Router (pages, layouts, API routes)
+components/         # Reusable UI and feature-based components
+lib/                # Business logic, Prisma client, auth, utils, actions
+hooks/              # Custom React hooks
+prisma/             # Database schema and migrations
+public/             # Static assets (if any)
+.env.example        # Environment variable template
+```
