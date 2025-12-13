@@ -1,8 +1,10 @@
 # 📊 **sub-tracker**
 
 ---
-(./screenshots/landing.png)
-(./screenshots/dashboard.png)
+(![./screenshots/landing.png](https://res.cloudinary.com/dehyfhrwi/image/upload/v1765608177/landing_pbpgc8.png))
+
+![(./screenshots/dashboard.png)](https://res.cloudinary.com/dehyfhrwi/image/upload/v1765608176/dashboard_jnfauo.png)
+
 ## 📚 Table of Contents
 
 * [Project Overview](#-project-overview)
