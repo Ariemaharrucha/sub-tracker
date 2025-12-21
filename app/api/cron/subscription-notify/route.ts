@@ -2,91 +2,83 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { sendEmail } from "@/lib/email";
 
-export const runtime = "nodejs"; // penting: jangan gunakan edge!
+export const runtime = "nodejs";
 
 export async function GET(request: Request) {
-  // Authorization
   const authHeader = request.headers.get("authorization");
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-    return NextResponse.json(
-      { message: "Unauthorized" },
-      { status: 401 },
-    );
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
-  // Date setup
   const now = new Date();
-  const jakarta = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Jakarta" }));
+  const jakartaTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Jakarta" }));
+  
+  // Fungsi Helper untuk membuat range jam 00:00:00 s.d 23:59:59
+  const getDayRange = (date: Date) => {
+    const start = new Date(date);
+    start.setHours(0, 0, 0, 0);
+    
+    const end = new Date(date);
+    end.setHours(23, 59, 59, 999);
+    
+    return { start, end };
+  };
 
-  const toDateOnly = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
-  const H = toDateOnly(jakarta);
-  const Hminus1 = new Date(H);
-  Hminus1.setDate(Hminus1.getDate() - 1);
-
-  const format = (d: Date) => d.toISOString().split("T")[0];
-
-  const targetH = format(H);
-  const targetHminus1 = format(Hminus1);
+  const today = getDayRange(jakartaTime);
 
   try {
-    // TRIAL END USERS
-    const trials = await prisma.subscription.findMany({
+    const trialsEndingToday = await prisma.subscription.findMany({
       where: {
         status: "TRIAL",
         trialEndDate: {
-          in: [targetH, targetHminus1],
+          gte: today.start, // Lebih besar/sama dengan 00:00
+          lte: today.end,   // Lebih kecil/sama dengan 23:59
         },
       },
       include: { user: true },
     });
 
-    // Send emails for trial
-    for (const sub of trials) {
+    for (const sub of trialsEndingToday) {
       await sendEmail({
         to: sub.user.email,
-        subject: `Trial segera berakhir: ${sub.name}`,
-        title: "Trial Akan Berakhir",
-        message: `Trial untuk <strong>${sub.name}</strong> akan berakhir pada 
-          <strong>${new Date(sub.trialEndDate!).toLocaleDateString("id-ID")}</strong>.
-          Jangan lupa cancel jika tidak ingin berlanjut.`,
+        subject: `Trial Berakhir Hari Ini: ${sub.name}`,
+        title: "Trial Segera Berakhir",
+        message: `Trial untuk <strong>${sub.name}</strong> berakhir hari ini (${sub.trialEndDate?.toLocaleDateString("id-ID")}). Langganan akan diperbarui otomatis/berhenti sesuai kebijakan.`,
       });
     }
 
-
-    // NEXT PAYMENT USERS
-    const payments = await prisma.subscription.findMany({
+    const paymentsDueToday = await prisma.subscription.findMany({
       where: {
-        status: { in: ["ACTIVE", "OVERDUE", "PENDING"] },
+        status: { in: ["ACTIVE", "OVERDUE"] }, // Biasanya pending tidak dinotif "jatuh tempo", tapi terserah logic bisnis
         nextPaymentDate: {
-          in: [targetH, targetHminus1],
+          gte: today.start,
+          lte: today.end,
         },
       },
       include: { user: true },
     });
 
-    // Send emails for next payment
-    for (const sub of payments) {
+    for (const sub of paymentsDueToday) {
       await sendEmail({
         to: sub.user.email,
-        subject: `Tagihan jatuh tempo: ${sub.name}`,
-        title: "Tagihan Akan Jatuh Tempo",
-        message: `Tagihan untuk <strong>${sub.name}</strong> jatuh tempo pada
-          <strong>${new Date(sub.nextPaymentDate).toLocaleDateString("id-ID")}</strong>.`,
+        subject: `Tagihan Jatuh Tempo: ${sub.name}`,
+        title: "Tagihan Jatuh Tempo",
+        message: `Tagihan untuk <strong>${sub.name}</strong> jatuh tempo hari ini.`,
       });
     }
 
     return NextResponse.json({
       ok: true,
-      trialsNotified: trials.length,
-      paymentsNotified: payments.length,
+      dateCheck: today.start.toISOString(),
+      trialsNotified: trialsEndingToday.length,
+      paymentsNotified: paymentsDueToday.length,
     });
+
   } catch (error) {
     console.error("Error sending notifications:", error);
     return NextResponse.json(
-      {
-        ok: false,
-        error: "Failed to send notifications",
-      },
+      { ok: false, error: "Failed to send notifications" },
+      { status: 500 }
     );
   }
 }
