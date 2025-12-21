@@ -15,7 +15,7 @@ export default function SubscriptionListWrapper({ userId, subscriptions }: { use
   );
 
   return (
-    <div className="mt-6 bg-linear-to-br from-orange-50 via-amber-50 to-rose-50 p-6 rounded-xl shadow-md">
+    <div className="mt-6 bg-linear-to-br from-orange-50 via-amber-50 to-rose-50 md:p-6 p-4 rounded-xl shadow-md">
       <h3 className="font-semibold text-2xl ml-2">Subscription List</h3>
       <div className="mt-6 flex justify-between items-center gap-8">
         <div className="w-full">

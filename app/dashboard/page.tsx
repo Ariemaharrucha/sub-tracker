@@ -13,13 +13,12 @@ export default async function DashboardPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-linear-to-br from-orange-50 via-amber-50 to-rose-50 py-4 ">
-      <main className="h-screen min-w-6xl px-6 pb-6 bg-white shadow-2xl rounded-2xl overflow-y-auto">
+      <main className="md:h-screen md:w-6xl w-full md:px-6 px-4 md:pb-6 pb-4 md:pt-6 pt-4 bg-white shadow-2xl rounded-2xl overflow-y-auto">
         <Navbar />
         <Suspense fallback={<SubscriptionOverviewSkeleton />}>
           <SubscriptionOverview userId={userId}/>
         </Suspense>
 
-        {/* <div className="border border-amber-800 mt-8"></div> */}
         <Suspense fallback={<SubscriptionListSkeleton />}>
           <SubscriptionListContainer userId={userId} />
        </Suspense>
