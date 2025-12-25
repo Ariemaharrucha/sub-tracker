@@ -4,6 +4,13 @@ import prisma from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
 import { AddSubscriptionSchema } from "@/lib/validation/addSubscriptionSchema"
 
+function getNextBillingDate(date: Date, frequency: string) {
+  const d = new Date(date)
+  if (frequency === "MONTHLY") d.setMonth(d.getMonth() + 1)
+  if (frequency === "YEARLY") d.setFullYear(d.getFullYear() + 1)
+  return d
+}
+
 export async function createSubscription(values: AddSubscriptionSchema, userId: string) {
   const { name, price, startDate, frequency, isTrial, trialDays } = values
 
@@ -44,11 +51,4 @@ export async function createSubscription(values: AddSubscriptionSchema, userId: 
     console.error(error)
     return { error: "Failed to create subscription" }
   }
-}
-
-function getNextBillingDate(date: Date, frequency: string) {
-  const d = new Date(date)
-  if (frequency === "MONTHLY") d.setMonth(d.getMonth() + 1)
-  if (frequency === "YEARLY") d.setFullYear(d.getFullYear() + 1)
-  return d
 }
