@@ -1,4 +1,3 @@
-
 'use client'
 
 import { Badge } from "@/components/ui/badge";
@@ -10,6 +9,7 @@ import { markAsPaid } from "@/lib/action/markAsPaid";
 import { cancelTrial } from "@/lib/action/cancelTrial";
 import DeleteSubscriptionButton from "./delete-subscription";
 import { SubscriptionType } from "@/lib/type/subscriptionType";
+import EditSubscriptionDialog from "./edit-subscription-dialog";
 
 function resolveStatus(s: SubscriptionType): "TRIAL" | "ACTIVE" | "PENDING" | "OVERDUE" | "CANCELLED" {
   const now = new Date();
@@ -152,9 +152,8 @@ export default function ListSubscriptionClient({ subscriptions }: { subscription
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem>
-                          <PencilIcon className="mr-2 h-4 w-4" />
-                          Edit
+                        <DropdownMenuItem asChild>
+                          <EditSubscriptionDialog subscription={s} />
                         </DropdownMenuItem>
                         <DropdownMenuItem asChild>
                           <DeleteSubscriptionButton id={s.id} />
