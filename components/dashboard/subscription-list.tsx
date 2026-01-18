@@ -7,10 +7,10 @@ import { SubscriptionType } from "@/lib/type/subscriptionType";
 import { SearchIcon } from "lucide-react";
 import AddSubscriptionDialog from "./add-subscription-dialog";
 
-export default function SubscriptionListWrapper({ userId, subscriptions }: { userId: string, subscriptions: SubscriptionType[] }) {
+export default function SubscriptionList({ userId, initialSubscriptions }: { userId: string; initialSubscriptions: SubscriptionType[] }) {
   const [query, setQuery] = useState("");
 
-  const filtered = subscriptions.filter(s =>
+  const filtered = initialSubscriptions.filter((s) =>
     s.name.toLowerCase().includes(query.toLowerCase())
   );
 
