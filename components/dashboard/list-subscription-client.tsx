@@ -107,7 +107,7 @@ export default function ListSubscriptionClient({ subscriptions }: { subscription
                         className="h-8 border-blue-600 text-blue-600 cursor-pointer"
                         onClick={() => markAsPaid.bind(null, s.id)()}
                       >
-                        Pay Now
+                        Was Paid
                       </Button>
                     )}
 
