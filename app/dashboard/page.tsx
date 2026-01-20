@@ -11,6 +11,7 @@ import { listSubscription } from "@/lib/action/listSubscription";
 export default async function DashboardPage() {
   const session = await auth.api.getSession({ headers: await headers() });
   const userId = session?.user.id as string;
+  const userName = session?.user.name as string;
 
   const subscriptions = await listSubscription(userId);
 
@@ -19,7 +20,7 @@ export default async function DashboardPage() {
       <main className="md:h-screen md:w-6xl w-full md:px-6 px-4 md:pb-6 pb-4 md:pt-6 pt-4 bg-white shadow-2xl rounded-2xl overflow-y-auto">
         <Navbar />
         <Suspense fallback={<SubscriptionOverviewSkeleton />}>
-          <SubscriptionOverview userId={userId}/>
+          <SubscriptionOverview userId={userId} userName={userName} />
         </Suspense>
 
         <Suspense fallback={<SubscriptionListSkeleton />}>
