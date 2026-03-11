@@ -1,15 +1,12 @@
-import { getTotalSubscriptionsPrice, getActiveSubscriptionsCount, getClosestSubscription } from "@/lib/action/subscriptionOverview";
+import { getDashboardStats } from "@/lib/action/getDashboardStats";
 import { Calendar, DollarSign, Activity } from "lucide-react";
 
-export default async function SubscriptionOverview({userId}: {userId: string}) {
-
-  const totalSubscriptionsPrice = await getTotalSubscriptionsPrice(userId)
-  const closestSubscription = await getClosestSubscription(userId)
-  const activeSubscriptionsCount = await getActiveSubscriptionsCount(userId)
+export default async function SubscriptionOverview({ userId, userName }: { userId: string, userName: string }) {
+  const { totalMonthlyPrice, closestSubscription, activeCount } = await getDashboardStats(userId);
 
   return (
     <div className="mt-4 bg-linear-to-br from-orange-50 via-amber-50 to-rose-50 md:p-6 p-4 rounded-xl shadow-md">
-      <h2 className="text-4xl text-amber-950 font-semibold">Hello, User! 👋</h2>
+      <h2 className="text-4xl text-amber-950 font-semibold">Hello, {userName}! 👋</h2>
       <p className="mt-2 text-lg text-amber-800">Saving is the basis of wealth, don&apos;t forget to cancel the trial!</p>
       <div className="grid md:grid-cols-5 grid-cols-1 mt-10 gap-3">
         
@@ -21,7 +18,7 @@ export default async function SubscriptionOverview({userId}: {userId: string}) {
             <h3 className="text-sm font-semibold text-amber-700 uppercase tracking-wide">TOTAL EXPENDITURE</h3>
           </div>
           <p className="text-2xl font-bold text-amber-950">
-            {totalSubscriptionsPrice} <span>/ Month</span>
+            {totalMonthlyPrice} <span>/ Month</span>
           </p>
         </div>
         
@@ -62,7 +59,7 @@ export default async function SubscriptionOverview({userId}: {userId: string}) {
           </div>
           <p className="">
             {" "}
-            {activeSubscriptionsCount} <span className="text-teal-950 font-semibold">Apps</span>
+            {activeCount} <span className="text-teal-950 font-semibold">Apps</span>
           </p>
         </div>
       </div>
