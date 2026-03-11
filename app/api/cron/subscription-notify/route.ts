@@ -10,21 +10,31 @@ export async function GET(request: Request) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
-  const now = new Date();
-  const jakartaTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Jakarta" }));
-  
-  // Fungsi Helper untuk membuat range jam 00:00:00 s.d 23:59:59
-  const getDayRange = (date: Date) => {
-    const start = new Date(date);
-    start.setHours(0, 0, 0, 0);
+  // Fungsi Helper untuk membuat range jam 00:00:00 s.d 23:59:59 berdasarkan Waktu Jakarta
+  const getJakartaDayRange = () => {
+    // 1. Dapatkan string waktu (WIB) dari saat ini
+    const formatter = new Intl.DateTimeFormat("en-US", {
+      timeZone: "Asia/Jakarta",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    });
     
-    const end = new Date(date);
-    end.setHours(23, 59, 59, 999);
-    
-    return { start, end };
+    // Format: "MM/DD/YYYY"
+    const [{ value: mo }, , { value: da }, , { value: ye }] = formatter.formatToParts(new Date());
+
+    // 2. Buat string ISO untuk Jam 00:00:00 dan 23:59:59 Waktu Jakarta (+07:00)
+    const startDateString = `${ye}-${mo}-${da}T00:00:00.000+07:00`;
+    const endDateString = `${ye}-${mo}-${da}T23:59:59.999+07:00`;
+
+    // 3. Konversi ke object Date UTC untuk Prisma
+    return {
+      start: new Date(startDateString),
+      end: new Date(endDateString)
+    };
   };
 
-  const today = getDayRange(jakartaTime);
+  const today = getJakartaDayRange();
 
   try {
     const trialsEndingToday = await prisma.subscription.findMany({
